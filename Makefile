@@ -12,6 +12,11 @@ pr:
 
 clean:
 	rm -rf \
+		synth/rtl/netlist.sv \
+		synth/rtl/xcelium.d \
+		synth/rtl/*log* \
+		synth/rtl/*history* \
+		synth/rtl/*.txt \
 		synth/.cadence \
 		synth/LEC/ \
 		synth/*.cmd \
@@ -36,8 +41,13 @@ clean:
 		pr/*.bin \
 		pr/*temp* \
 
-clean_syn:
+cleansyn:
 	rm -rf \
+		synth/rtl/netlist.sv \
+		synth/rtl/xcelium.d \
+		synth/rtl/*log* \
+		synth/rtl/*history* \
+		synth/rtl/*.txt \
 		synth/.cadence \
 		synth/LEC/ \
 		synth/*.cmd \
@@ -50,7 +60,7 @@ clean_syn:
 		synth/.st_launch* \
 		synth/.oa_import* \
 
-clean_pr:
+cleanpr:
 	rm -rf \
 		pr/.cadence \
 		pr/*log* \
