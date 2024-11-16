@@ -19,8 +19,8 @@ clean:
 		synth/rtl/*.txt \
 		synth/.cadence \
 		synth/LEC/ \
-		synth/*.cmd \
-		synth/*.log \
+		synth/*cmd* \
+		synth/*log* \
 		synth/*.swp \
 		synth/genus_synth* \
 		synth/results \
@@ -31,15 +31,18 @@ clean:
 		synth/*log* \
 		pr/.cadence \
 		pr/*log* \
+		pr/*rpt* \
+		pr/*old* \
 		pr/ecoTimingDB \
 		pr/results_pr \
 		pr/saved \
 		pr/timingReports \
 		pr/reports \
 		pr/.c0_soc* \
-		pr/*.cmd \
+		pr/*cmd* \
 		pr/*.bin \
 		pr/*temp* \
+		pr/*.map \
 
 cleansyn:
 	rm -rf \
@@ -50,8 +53,8 @@ cleansyn:
 		synth/rtl/*.txt \
 		synth/.cadence \
 		synth/LEC/ \
-		synth/*.cmd \
-		synth/*.log \
+		synth/*cmd* \
+		synth/*log* \
 		synth/*.swp \
 		synth/genus_synth* \
 		synth/results \
@@ -64,12 +67,16 @@ cleanpr:
 	rm -rf \
 		pr/.cadence \
 		pr/*log* \
+		pr/*rpt* \
+		pr/*old* \
 		pr/ecoTimingDB \
 		pr/results_pr \
 		pr/saved \
 		pr/timingReports \
 		pr/reports \
 		pr/.c0_soc* \
-		pr/*.cmd \
+		pr/*cmd* \
 		pr/*.bin \
 		pr/*temp* \
+		pr/*.map \
+		pr/*.rpt \
