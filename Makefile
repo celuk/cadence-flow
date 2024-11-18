@@ -7,7 +7,7 @@ all:
 syn:
 	cd synth && ./run_synth.sh && cd ..
 
-pr:
+pnr:
 	cd pr && ./run_pr_batch.sh && cd ..
 
 clean:
