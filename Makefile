@@ -80,3 +80,13 @@ cleanpr:
 		pr/*temp* \
 		pr/*.map \
 		pr/*.rpt \
+
+fp: cleanpr
+	cd pr && \
+	innovus -stylus -files "scripts/01_initialize_design.tcl \
+	scripts/02_connect_power_to_gates.tcl \
+	scripts/03_create_floorplan.tcl";
+#	innovus -stylus -batch -files scripts/01_initialize_design.tcl && \
+#	innovus -stylus -batch -files scripts/02_connect_power_to_gates.tcl && \
+#	innovus -stylus -batch -files scripts/03_create_floorplan.tcl && \
+#	innovus -stylus -files scripts/load_implemented_ic2.tcl;
