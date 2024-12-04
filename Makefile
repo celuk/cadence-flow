@@ -49,6 +49,9 @@ cleanpr:
 		pr/*temp* \
 		pr/*.map \
 		pr/*.rpt \
+		pr/*_launch* \
+		pr/*_client* \
+		pr/.timing* \
 
 fp: cleanpr
 	cd pr && \
