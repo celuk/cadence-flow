@@ -22,6 +22,7 @@ INNOVUS_EXEC ?= innovus
 OUTPUTS_DIR ?= outputs
 REPORTS_DIR ?= reports
 LOGS_DIR ?= logs
+DB_DIR ?= dlibs
 
 script1  ?= scripts/01_synthesize.tcl
 script2  ?= scripts/02_init_design.tcl
@@ -30,15 +31,16 @@ script4  ?= scripts/04_placement.tcl
 script5  ?= scripts/05_cts.tcl
 script6  ?= scripts/06_routing.tcl
 script7  ?= scripts/07_signoff_extraction.tcl
-script8  ?= scripts/08_signoff_metal_fill.tcl
-script9 ?= scripts/09_signoff_drc.tcl
-script10 ?= scripts/10_signoff_lvs.tcl
-script11 ?= scripts/11_streamout.tcl
+script8  ?= scripts/08_signoff_opt.tcl
+script9  ?= scripts/09_signoff_metal_fill.tcl
+script10 ?= scripts/10_signoff_drc.tcl
+script11 ?= scripts/11_signoff_lvs.tcl
+script12 ?= scripts/12_streamout.tcl
 
 $(LOGS_DIR):
 	mkdir -p $(LOGS_DIR)
 
-all: s1
+all: s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12
 
 s1: $(LOGS_DIR)
 	$(GENUS_EXEC) -abort_on_error -batch -overwrite -files $(script1) | tee $(LOGS_DIR)/$(shell basename $(script1) .tcl | sed 's|^.*/||').log
@@ -72,6 +74,9 @@ s10:
 
 s11:
 	$(INNOVUS_EXEC) -stylus -abort_on_error -batch -files $(script11) | tee $(LOGS_DIR)/$(shell basename $(script11) .tcl | sed 's|^.*/||').log
+
+s12:
+	$(INNOVUS_EXEC) -stylus -abort_on_error -batch -files $(script12) | tee $(LOGS_DIR)/$(shell basename $(script12) .tcl | sed 's|^.*/||').log
 
 clean:
 	rm -rf xcelium.d \

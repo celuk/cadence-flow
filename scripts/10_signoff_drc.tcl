@@ -17,18 +17,22 @@
 
 source scripts/00_setup.tcl
 
-set PREVIOUS_STEP $ROUTING_BLOCK
-set CURRENT_STEP $SEXTRACT_BLOCK
+set PREVIOUS_STEP $SMFILL_BLOCK
+set CURRENT_STEP $SDRC_BLOCK
 
 read_db ${DB_DIR}/${PREVIOUS_STEP}.db
 
 set_innovus_options
 
-set_db extract_rc_engine post_route
-set_db extract_rc_effort_level signoff
-set_db extract_rc_coupled true
-set_db extract_rc_lef_tech_file_map extraction.layermap
+#delete_routes -regular_wire_with_drc
+#route_eco -fix_drc
+#route_eco
 
-extract_rc
+redirect -file $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_check_drc.rpt {check_drc}
+
+#run_pvs_drc_rules $topdrc -gds_file $resultDir/${DESIGN}.gds.gz
+
+#read_markers c0_soc.ascii -rule_map_file $topdrc -type pvs
+#route_fix_signoff_drc
 
 write_db ${DB_DIR}/${CURRENT_STEP}.db

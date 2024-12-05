@@ -17,18 +17,13 @@
 
 source scripts/00_setup.tcl
 
-set PREVIOUS_STEP $ROUTING_BLOCK
-set CURRENT_STEP $SEXTRACT_BLOCK
+set PREVIOUS_STEP $SEXTRACT_BLOCK
+set CURRENT_STEP $SMFILL_BLOCK
 
 read_db ${DB_DIR}/${PREVIOUS_STEP}.db
 
 set_innovus_options
 
-set_db extract_rc_engine post_route
-set_db extract_rc_effort_level signoff
-set_db extract_rc_coupled true
-set_db extract_rc_lef_tech_file_map extraction.layermap
 
-extract_rc
 
 write_db ${DB_DIR}/${CURRENT_STEP}.db

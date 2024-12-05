@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+
 #set STD_LEF $EDITED_STD_LEF
 
 set QRC_TECH_PATH ""
@@ -27,8 +28,8 @@ set DESIGN_LIBRARY ${DESIGN_NAME}.db
 
 set OUTPUTS_DIR "outputs"
 set REPORTS_DIR "reports"
-set DB_DIR "dlibs"
 set LOGS_DIR "logs"
+set DB_DIR "dlibs"
 set LEC_DIR "LEC"
 
 set GATE_LEVEL_VERILOG ${OUTPUTS_DIR}/${TOP_MODULE}_gate_level.v
@@ -72,7 +73,7 @@ set GROUND_NET "VSS"
 set MIN_ROUTING_LAYER 3
 set MAX_ROUTING_LAYER 9
 
-set CTS_LIB_CELL_PATTERNS "*/BUF */INV*"
+#set CTS_LIB_CELL_PATTERNS "*/BUF */INV*"
 
 #set IO_PAD_FILLER_CELLS $ALL_IO_PAD_FILLER_CELLS
 
@@ -115,10 +116,11 @@ set PLACE_BLOCK 04-placement
 set CTS_BLOCK 05-cts
 set ROUTING_BLOCK 06-routing
 set SEXTRACT_BLOCK 07-signoff_extraction
-set SMFILL_BLOCK 08-signoff_metal_fill
-set SDRC_BLOCK 09-signoff_drc
-set SLVS_BLOCK 10-signoff_lvs
-set STREAMOUT_BLOCK 11-streamout
+set SOPT_BLOCK 08-signoff_opt
+set SMFILL_BLOCK 09-signoff_metal_fill
+set SDRC_BLOCK 10-signoff_drc
+set SLVS_BLOCK 11-signoff_lvs
+set STREAMOUT_BLOCK 12-streamout
 
 if { ![file exists $OUTPUTS_DIR] } {
     file mkdir $OUTPUTS_DIR
@@ -143,6 +145,7 @@ foreach block {
     CTS_BLOCK
     ROUTING_BLOCK
     SEXTRACT_BLOCK
+    SOPT
     SMFILL_BLOCK
     SDRC_BLOCK
     SLVS_BLOCK

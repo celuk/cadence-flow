@@ -36,4 +36,6 @@ set_db add_tieoffs_cells $TIE_CELLS
 set_db add_tieoffs_max_fanout 1
 add_tieoffs
 
+source scripts/add_bond_pads.tcl
+
 write_db ${DB_DIR}/${CURRENT_STEP}.db
