@@ -1,16 +1,55 @@
+# This file is part of https://github.com/celuk/cadence-flow
+# Copyright (C) 2024  Seyyid Hikmet Celik
+# 					  seyyid4091@gmail.com
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+XCELIUM_EXEC ?= xrun
 GENUS_EXEC ?= genus
 INNOVUS_EXEC ?= innovus
 
-all:
-	cd synth && ./run_synth.sh && cd .. && cd pr && ./run_pr_batch.sh
+TSMCHOME ?=
 
-syn:
-	cd synth && ./run_synth.sh && cd ..
+TOP_MODULE = c0_soc
+OUTPUTS_DIR = outputs
+NETLIST_PATH = $(OUTPUTS_DIR)
+NETLIST = $(NETLIST_PATH)/$(TOP_MODULE)_netlist.sv
 
-pnr:
-	cd pr && ./run_pr_batch.sh && cd ..
+RTL_PATH = data/rtl
 
-clean: cleansyn cleanpr
+IO_VERILOG_MODEL =
+XRUN_PARAMS :=
+XRUN_PARAMS += -v $(IO_VERILOG_MODEL)
+XRUN_PARAMS += -timescale 1ns/1ps
+XRUN_PARAMS += +nowarnTRNNOP
+
+#rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
+rwildcard = $(foreach d,$(wildcard $1*),$(if $(wildcard $d),$(call rwildcard,$d/,$2),$(filter $(subst *,%,$2),$d)))
+VERILOG_FILES = $(call rwildcard,$(RTL_PATH),*)
+
+all: netlist
+
+netlist:
+	@$(XCELIUM_EXEC) \
+		-clean \
+		-compile \
+		-incdir $(RTL_PATH) \
+		-top $(TOP_MODULE) \
+		$(VERILOG_FILES)
+
+clean:
+	rm -rf xcelium.d \
 
 cleansyn:
 	rm -rf \
