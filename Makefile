@@ -34,19 +34,22 @@ XRUN_PARAMS += -v $(IO_VERILOG_MODEL)
 XRUN_PARAMS += -timescale 1ns/1ps
 XRUN_PARAMS += +nowarnTRNNOP
 
-#rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
-rwildcard = $(foreach d,$(wildcard $1*),$(if $(wildcard $d),$(call rwildcard,$d/,$2),$(filter $(subst *,%,$2),$d)))
+rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
+#rwildcard = $(foreach d,$(wildcard $1*),$(if $(wildcard $d),$(call rwildcard,$d/,$2),$(filter $(subst *,%,$2),$d)))
 VERILOG_FILES = $(call rwildcard,$(RTL_PATH),*)
 
 all: netlist
 
-netlist:
+netlist: $(NETLIST)
 	@$(XCELIUM_EXEC) \
 		-clean \
-		-compile \
+		-elaborate $(NETLIST) $(XRUN_PARAMS) \
 		-incdir $(RTL_PATH) \
-		-top $(TOP_MODULE) \
-		$(VERILOG_FILES)
+		-top $(TOP_MODULE)
+
+$(NETLIST): $(VERILOG_FILES)
+	@mkdir -p $(dir $@)
+	cat $(VERILOG_FILES) > $@
 
 clean:
 	rm -rf xcelium.d \
