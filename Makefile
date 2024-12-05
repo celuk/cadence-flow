@@ -169,9 +169,9 @@ show show_cli:
 	echo "source $(SETUP_TCL);" >> open_block.tcl; \
 	if [ -n "$(IS_CLI)" ]; then \
 		if [ "$$block" = "01-synthesize" ]; then \
-			$(GENUS_EXEC) -no_gui -files open_block.tcl; \
+			$(GENUS_EXEC) -files open_block.tcl; \
 		else \
-			$(INNOVUS_EXEC) -stylus -no_gui -files open_block.tcl; \
+			$(INNOVUS_EXEC) -stylus -files open_block.tcl; \
 		fi; \
 	else \
 		if [ "$$block" = "01-synthesize" ]; then \
