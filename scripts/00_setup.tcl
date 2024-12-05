@@ -145,7 +145,7 @@ foreach block {
     CTS_BLOCK
     ROUTING_BLOCK
     SEXTRACT_BLOCK
-    SOPT
+    SOPT_BLOCK
     SMFILL_BLOCK
     SDRC_BLOCK
     SLVS_BLOCK
