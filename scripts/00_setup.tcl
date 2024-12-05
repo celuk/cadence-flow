@@ -41,16 +41,20 @@ set SDC_PATH "data/sdc"
 set TECH_PATH "data/tech"
 set LOGO_PATH "data/logo"
 set IO_PATH "data/io"
+set EXT_PATH "data/ext"
 
 lappend search_path $RTL_PATH
 lappend search_path $SDC_PATH
 lappend search_path $TECH_PATH
 lappend search_path $LOGO_PATH
 lappend search_path $IO_PATH
+lappend search_path $EXT_PATH
 
 source scripts/00_pdk_setup.tcl
 
 set IO_FILE "${IO_PATH}/c0_soc.io"
+
+set EXTRACTION_LAYERMAP_FILE "${EXT_PATH}/extraction.layermap"
 
 set LOGO_FILE "${LOGO_PATH}/kasirga_logo.bmp"
 
@@ -76,6 +80,8 @@ set GROUND_NET "VSS"
 
 set MIN_ROUTING_LAYER 3
 set MAX_ROUTING_LAYER 9
+
+#set TIE_CELLS $ALL_TIE_CELLS
 
 #set CTS_LIB_CELL_PATTERNS "*/BUF */INV*"
 

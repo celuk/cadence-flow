@@ -29,31 +29,55 @@ set_interactive_constraint_modes [all_constraint_modes -active]
 set_propagated_clock [all_clocks]
 set_db timing_analysis_async_checks async
 
-time_design_signoff -report_prefix $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_signoff_time -report_only -report_dir $REPORTS_DIR/${CURRENT_STEP}
+set_db opt_signoff_buffer_cell_list $BUFFER_CELLS
+## PBA-based signoff optimization
+set_db opt_signoff_retime path_slew_propagation
+set_db opt_signoff_verbose true
+set_db opt_signoff_keep_tmp_files false
+set_db opt_signoff_optimize_core_only true
+set_db opt_signoff_along_route_buffering true
+set_db opt_signoff_routing_congestion_aware true
+set_db opt_signoff_clock_cell_list $CTS_BUF_CELLS
+set_db opt_signoff_allow_skewing true
+
+#opt_signoff -all 
+
+time_design_signoff -report_full_clock_path -report_prefix ${TOP_MODULE}_signoff_time -report_only -report_dir $REPORTS_DIR/${CURRENT_STEP}
 
 delete_filler
-
 set_db opt_signoff_setup_target_slack 0.2
 
-opt_signoff -drv \
-    -no_eco_route \
-    -report_prefix $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_signoff_opt_drv \
-    -report_dir $REPORTS_DIR/${CURRENT_STEP} \
-
-opt_signoff -hold \
-    -no_eco_route \
-    -report_prefix $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_signoff_opt_hold \
-    -report_dir $REPORTS_DIR/${CURRENT_STEP}
-
-opt_signoff -setup \
-    -no_eco_route \
-    -report_prefix $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_signoff_opt_setup \
-    -report_dir $REPORTS_DIR/${CURRENT_STEP}
+opt_signoff -all
 
 add_fillers
 route_eco
 extract_rc
 
-time_design_signoff -report_prefix $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_signoff_time_opt -report_only -report_dir $REPORTS_DIR/${CURRENT_STEP}
+time_design_signoff -report_full_clock_path -report_prefix ${TOP_MODULE}_signoff_time_opt -report_only -report_dir $REPORTS_DIR/${CURRENT_STEP}
+
+#delete_filler
+#
+#set_db opt_signoff_setup_target_slack 0.2
+#
+#opt_signoff -drv \
+#    -no_eco_route \
+#    -report_prefix ${TOP_MODULE}_signoff_opt_drv \
+#    -report_dir $REPORTS_DIR/${CURRENT_STEP}
+#
+#opt_signoff -hold \
+#    -no_eco_route \
+#    -report_prefix ${TOP_MODULE}_signoff_opt_hold \
+#    -report_dir $REPORTS_DIR/${CURRENT_STEP}
+#
+#opt_signoff -setup \
+#    -no_eco_route \
+#    -report_prefix ${TOP_MODULE}_signoff_opt_setup \
+#    -report_dir $REPORTS_DIR/${CURRENT_STEP}
+#
+#add_fillers
+#route_eco
+#extract_rc
+#
+#time_design_signoff -report_full_clock_path -report_prefix ${TOP_MODULE}_signoff_time_opt -report_only -report_dir $REPORTS_DIR/${CURRENT_STEP}
 
 write_db ${DB_DIR}/${CURRENT_STEP}.db

@@ -27,7 +27,7 @@ set_innovus_options
 set_db extract_rc_engine post_route
 set_db extract_rc_effort_level signoff
 set_db extract_rc_coupled true
-set_db extract_rc_lef_tech_file_map extraction.layermap
+set_db extract_rc_lef_tech_file_map $EXTRACTION_LAYERMAP_FILE
 
 extract_rc
 

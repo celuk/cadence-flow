@@ -73,7 +73,7 @@ write_netlist ${OUTPUTS_DIR}/${DESIGN_NAME}.noPower.v
 
 # write_def -floorplan ${OUTPUTS_DIR}/${DESIGN_NAME}_floorplan.def
 
-report_qor -format html -file $reportDir/15_qor.html
-report_area -out_file $reportDir/15_area.rpt
+report_qor -format html -file $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_qor.html
+report_area -out_file $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_area.rpt
 
 write_db ${DB_DIR}/${CURRENT_STEP}.db

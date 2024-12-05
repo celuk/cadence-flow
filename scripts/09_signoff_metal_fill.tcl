@@ -17,7 +17,7 @@
 
 source scripts/00_setup.tcl
 
-set PREVIOUS_STEP $SEXTRACT_BLOCK
+set PREVIOUS_STEP $SOPT_BLOCK
 set CURRENT_STEP $SMFILL_BLOCK
 
 read_db ${DB_DIR}/${PREVIOUS_STEP}.db

@@ -139,6 +139,7 @@ clean:
 		*_launch* \
 		*_client* \
 		.timing* \
+		RPT*/ \
 		open_block.tcl
 
 show show_cli:
