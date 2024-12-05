@@ -144,24 +144,38 @@ clean:
 show show_cli:
 	$(eval IS_CLI := $(filter show_cli,$(MAKECMDGOALS))) \
 	$(eval SHOW_ARGS := $(if $(IS_CLI),$(shell echo "$(MAKECMDGOALS)" | sed -n 's/.*show_cli *\([^ ]*\).*/\1/p'),$(shell echo "$(MAKECMDGOALS)" | sed -n 's/.*show *\([^ ]*\).*/\1/p'))) \
+	$(eval LATEST_BLOCK_NAME := $(lastword $(ALL_BLOCKS))) \
 	if [ -n "$(SHOW_ARGS)" ]; then \
-		block=$$(echo "$(ALL_BLOCKS)" | tr ' ' '\n' | grep -i "$(SHOW_ARGS)"); \
+		block=$$(echo "$(ALL_BLOCKS)" | tr ' ' '\n' | grep -E "^0?$(SHOW_ARGS)-" | head -n 1); \
 		if [ -z "$$block" ]; then \
 			echo "No matching block found for input: '$(SHOW_ARGS)'."; \
 			exit 1; \
 		fi; \
 	else \
-		block=$$(echo "$(ALL_BLOCKS)" | tr ' ' '\n' | tail -n 1); \
+		block_found=false; \
+		for block in $$(echo "$(ALL_BLOCKS)" | tr ' ' '\n' | tac); do \
+			latest_block=$$(echo $$block); \
+			if [ -f "$(DB_DIR)/$$latest_block.db" ] || [ -d "$(DB_DIR)/$$latest_block.db" ]; then \
+				block=$$latest_block; \
+				block_found=true; \
+				break; \
+			fi; \
+		done; \
+		if [ "$$block_found" = false ]; then \
+			echo "No matching block found."; \
+			exit 1; \
+		fi; \
 	fi; \
 	echo "read_db $(DB_DIR)/$$block.db" > open_block.tcl; \
 	echo "source $(SETUP_TCL);" >> open_block.tcl; \
 	if [ -n "$(IS_CLI)" ]; then \
-		$(INNOVUS_EXEC) -stylus -no_gui -files open_block.tcl; \
+		$(INNOVUS_EXEC) -stylus -abort_on_error -no_gui -files open_block.tcl; \
 	else \
 		echo "gui_set_draw_view place" >> open_block.tcl; \
 		echo "gui_show" >> open_block.tcl; \
-		$(INNOVUS_EXEC) -stylus -files open_block.tcl; \
-	fi; \
+		$(INNOVUS_EXEC) -stylus -abort_on_error -files open_block.tcl; \
+	fi; 
+	rm -f open_block.tcl
 
 %:
 	@:
