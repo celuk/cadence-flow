@@ -15,11 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#set STD_LEF $EDITED_STD_LEF
+
+set QRC_TECH_PATH ""
+
 set PROCESS_NODE 65
 
 set TOP_MODULE "c0_soc"
 set DESIGN_NAME "${TOP_MODULE}"
-set DESIGN_LIBRARY ${DESIGN_NAME}.nlib
+set DESIGN_LIBRARY ${DESIGN_NAME}.db
 
 set OUTPUTS_DIR "outputs"
 set REPORTS_DIR "reports"
@@ -28,6 +32,9 @@ set LOGS_DIR "logs"
 set LEC_DIR "LEC"
 
 set GATE_LEVEL_VERILOG ${OUTPUTS_DIR}/${TOP_MODULE}_gate_level.v
+
+set NETLIST_PATH $OUTPUTS_DIR
+set NETLIST ${NETLIST_PATH}/${TOP_MODULE}_netlist.sv
 
 #set_app_options -name search_path -value "."
 set search_path "."
@@ -155,9 +162,16 @@ foreach block {
 
 proc set_genus_options {} {
     global \
+    RTL_PATH \
+    NETLIST_PATH \
     LEC_DIR
 
     set_db design_process_node $PROCESS_NODE
+
+    set_db init_hdl_search_path {
+        $RTL_PATH
+        $NETLIST_PATH
+    }
 
     set_db syn_generic_effort medium
     set_db syn_map_effort medium
