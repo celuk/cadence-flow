@@ -144,7 +144,6 @@ clean:
 show show_cli:
 	$(eval IS_CLI := $(filter show_cli,$(MAKECMDGOALS))) \
 	$(eval SHOW_ARGS := $(if $(IS_CLI),$(shell echo "$(MAKECMDGOALS)" | sed -n 's/.*show_cli *\([^ ]*\).*/\1/p'),$(shell echo "$(MAKECMDGOALS)" | sed -n 's/.*show *\([^ ]*\).*/\1/p'))) \
-	$(eval LATEST_BLOCK_NAME := $(lastword $(ALL_BLOCKS))) \
 	if [ -n "$(SHOW_ARGS)" ]; then \
 		block=$$(echo "$(ALL_BLOCKS)" | tr ' ' '\n' | grep -E "^0?$(SHOW_ARGS)-" | head -n 1); \
 		if [ -z "$$block" ]; then \
@@ -169,13 +168,32 @@ show show_cli:
 	echo "read_db $(DB_DIR)/$$block.db" > open_block.tcl; \
 	echo "source $(SETUP_TCL);" >> open_block.tcl; \
 	if [ -n "$(IS_CLI)" ]; then \
-		$(INNOVUS_EXEC) -stylus -abort_on_error -no_gui -files open_block.tcl; \
+		if [ "$$block" = "01-synthesize" ]; then \
+			$(GENUS_EXEC) -no_gui -files open_block.tcl; \
+		else \
+			$(INNOVUS_EXEC) -stylus -no_gui -files open_block.tcl; \
+		fi; \
 	else \
-		echo "gui_set_draw_view place" >> open_block.tcl; \
-		echo "gui_show" >> open_block.tcl; \
-		$(INNOVUS_EXEC) -stylus -abort_on_error -files open_block.tcl; \
-	fi; 
-	rm -f open_block.tcl
+		if [ "$$block" = "01-synthesize" ]; then \
+			echo "gui_show" >> open_block.tcl; \
+			$(GENUS_EXEC) -files open_block.tcl; \
+		else \
+			echo "gui_set_draw_view place" >> open_block.tcl; \
+			echo "gui_show" >> open_block.tcl; \
+			$(INNOVUS_EXEC) -stylus -files open_block.tcl; \
+		fi; \
+	fi; \
+	rm -f open_block.tcl;
+
+genus_cli:
+	$(GENUS_EXEC) -no_gui
+genus_gui:
+	$(GENUS_EXEC)
+
+innovus_cli:
+	$(INNOVUS_EXEC) -stylus -no_gui
+innovus_gui:
+	$(GENUS_EXEC)
 
 %:
 	@:
