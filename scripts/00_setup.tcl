@@ -40,13 +40,17 @@ set RTL_PATH "data/rtl"
 set SDC_PATH "data/sdc"
 set TECH_PATH "data/tech"
 set LOGO_PATH "data/logo"
+set IO_PATH "data/io"
 
 lappend search_path $RTL_PATH
 lappend search_path $SDC_PATH
 lappend search_path $TECH_PATH
 lappend search_path $LOGO_PATH
+lappend search_path $IO_PATH
 
 source scripts/00_pdk_setup.tcl
+
+set IO_FILE "${IO_PATH}/c0_soc.io"
 
 set LOGO_FILE "${LOGO_PATH}/kasirga_logo.bmp"
 

@@ -1,6 +1,9 @@
 *.log
+*.log*
 *.logv
+*.logv*
 *.cmd
+*.cmd*
 *.txt*
 *tmp*/
 *cache*/
@@ -33,3 +36,4 @@ xrun.log
 xrun.history
 xcelium.d
 .history
+open_block.tcl

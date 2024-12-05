@@ -19,23 +19,51 @@
 GENUS_EXEC ?= genus
 INNOVUS_EXEC ?= innovus
 
+SETUP_TCL ?= scripts/00_setup.tcl
+
 OUTPUTS_DIR ?= outputs
 REPORTS_DIR ?= reports
 LOGS_DIR ?= logs
 DB_DIR ?= dlibs
 
-script1  ?= scripts/01_synthesize.tcl
-script2  ?= scripts/02_init_design.tcl
-script3  ?= scripts/03_design_planning.tcl
-script4  ?= scripts/04_placement.tcl
-script5  ?= scripts/05_cts.tcl
-script6  ?= scripts/06_routing.tcl
-script7  ?= scripts/07_signoff_extraction.tcl
-script8  ?= scripts/08_signoff_opt.tcl
-script9  ?= scripts/09_signoff_metal_fill.tcl
-script10 ?= scripts/10_signoff_drc.tcl
-script11 ?= scripts/11_signoff_lvs.tcl
-script12 ?= scripts/12_streamout.tcl
+SYNTH_BLOCK     = 01-synthesize
+INIT_BLOCK      = 02-init_design
+DPLAN_BLOCK     = 03-design_planning
+PLACE_BLOCK     = 04-placement
+CTS_BLOCK       = 05-cts
+ROUTING_BLOCK   = 06-routing
+SEXTRACT_BLOCK  = 07-signoff_extraction
+SOPT_BLOCK      = 08-signoff_opt
+SMFILL_BLOCK    = 09-signoff_metal_fill
+SDRC_BLOCK      = 10-signoff_drc
+SLVS_BLOCK      = 11-signoff_lvs
+STREAMOUT_BLOCK = 12-streamout
+
+ALL_BLOCKS = $(SYNTH_BLOCK) \
+			 $(INIT_BLOCK) \
+			 $(DPLAN_BLOCK) \
+			 $(PLACE_BLOCK) \
+			 $(CTS_BLOCK) \
+             $(ROUTING_BLOCK) \
+			 $(SEXTRACT_BLOCK) \
+			 $(SOPT_BLOCK) \
+			 $(SMFILL_BLOCK) \
+             $(SDRC_BLOCK) \
+			 $(SLVS_BLOCK) \
+			 $(STREAMOUT_BLOCK)
+
+script1  ?= scripts/$(subst -,_,$(SYNTH_BLOCK)).tcl
+script2  ?= scripts/$(subst -,_,$(INIT_BLOCK)).tcl
+script3  ?= scripts/$(subst -,_,$(DPLAN_BLOCK)).tcl
+script4  ?= scripts/$(subst -,_,$(PLACE_BLOCK)).tcl
+script5  ?= scripts/$(subst -,_,$(CTS_BLOCK)).tcl
+script6  ?= scripts/$(subst -,_,$(ROUTING_BLOCK)).tcl
+script7  ?= scripts/$(subst -,_,$(SEXTRACT_BLOCK)).tcl
+script8  ?= scripts/$(subst -,_,$(SOPT_BLOCK)).tcl
+script9  ?= scripts/$(subst -,_,$(SMFILL_BLOCK)).tcl
+script10 ?= scripts/$(subst -,_,$(SDRC_BLOCK)).tcl
+script11 ?= scripts/$(subst -,_,$(SLVS_BLOCK)).tcl
+script12 ?= scripts/$(subst -,_,$(STREAMOUT_BLOCK)).tcl
 
 $(LOGS_DIR):
 	mkdir -p $(LOGS_DIR)
@@ -111,3 +139,29 @@ clean:
 		*_launch* \
 		*_client* \
 		.timing* \
+		open_block.tcl
+
+show show_cli:
+	$(eval IS_CLI := $(filter show_cli,$(MAKECMDGOALS))) \
+	$(eval SHOW_ARGS := $(if $(IS_CLI),$(shell echo "$(MAKECMDGOALS)" | sed -n 's/.*show_cli *\([^ ]*\).*/\1/p'),$(shell echo "$(MAKECMDGOALS)" | sed -n 's/.*show *\([^ ]*\).*/\1/p'))) \
+	if [ -n "$(SHOW_ARGS)" ]; then \
+		block=$$(echo "$(ALL_BLOCKS)" | tr ' ' '\n' | grep -i "$(SHOW_ARGS)"); \
+		if [ -z "$$block" ]; then \
+			echo "No matching block found for input: '$(SHOW_ARGS)'."; \
+			exit 1; \
+		fi; \
+	else \
+		block=$$(echo "$(ALL_BLOCKS)" | tr ' ' '\n' | tail -n 1); \
+	fi; \
+	echo "read_db $(DB_DIR)/$$block.db" > open_block.tcl; \
+	echo "source $(SETUP_TCL);" >> open_block.tcl; \
+	if [ -n "$(IS_CLI)" ]; then \
+		$(INNOVUS_EXEC) -stylus -no_gui -files open_block.tcl; \
+	else \
+		echo "gui_set_draw_view place" >> open_block.tcl; \
+		echo "gui_show" >> open_block.tcl; \
+		$(INNOVUS_EXEC) -stylus -files open_block.tcl; \
+	fi; \
+
+%:
+	@:

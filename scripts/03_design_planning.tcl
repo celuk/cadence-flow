@@ -24,6 +24,13 @@ read_db ${DB_DIR}/${PREVIOUS_STEP}.db
 
 set_innovus_options
 
+read_io_file $IO_FILE
+
+create_floorplan -box_size {0 0 1000 1000 75 75 925 925 125 125 875 875}
+
+legalize_floorplan -check_orient
+legalize_floorplan -check_site
+
 #connect_global_net VDD -all -type pgpin -pin vdd!
 #connect_global_net VSS -all -type pgpin -pin vss!
 #connect_global_net VDDPST -all -type pgpin -pin vddpst!

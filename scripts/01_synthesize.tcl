@@ -62,10 +62,10 @@ timestat MAPPED
 syn_opt $DESIGN_NAME
 timestat OPT
 
-redirect -file $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_timing_intent.rpt {check_timing_intent -verbose}
-redirect -file $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_design.rpt {check_design -unresolved}
-redirect -file $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_qor.rpt {report_qor $DESIGN_NAME}
-redirect -file $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_timing.rpt {report_timing}
+redirect $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_timing_intent.rpt {check_timing_intent -verbose}
+redirect $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_design.rpt {check_design -unresolved}
+redirect $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_qor.rpt {report_qor $DESIGN_NAME}
+redirect $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_timing.rpt {report_timing}
 
 write_design -innovus -basename ${DB_DIR}/$DESIGN_NAME
 

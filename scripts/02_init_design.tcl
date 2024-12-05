@@ -19,18 +19,11 @@ source scripts/00_setup.tcl
 
 set CURRENT_STEP $INIT_BLOCK
 
-set_innovus_options
-
 set_db init_power_nets  {VDD VDDPST}
 set_db init_ground_nets {VSS}
 
 source ${DB_DIR}/${DESIGN_NAME}.invs_setup.tcl
 
-read_io_file c0_soc.io
-
-create_floorplan -box_size {0 0 1000 1000 75 75 925 925 125 125 875 875}
-
-legalize_floorplan -check_orient
-legalize_floorplan -check_site
+set_innovus_options
 
 write_db ${DB_DIR}/${CURRENT_STEP}.db
