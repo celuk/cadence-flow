@@ -27,14 +27,11 @@ set DESIGN_LIBRARY ${DESIGN_NAME}.db
 
 set OUTPUTS_DIR "outputs"
 set REPORTS_DIR "reports"
-set DB_DIR "saved"
+set DB_DIR "dlibs"
 set LOGS_DIR "logs"
 set LEC_DIR "LEC"
 
 set GATE_LEVEL_VERILOG ${OUTPUTS_DIR}/${TOP_MODULE}_gate_level.v
-
-set NETLIST_PATH $OUTPUTS_DIR
-set NETLIST ${NETLIST_PATH}/${TOP_MODULE}_netlist.sv
 
 #set_app_options -name search_path -value "."
 set search_path "."
@@ -109,20 +106,19 @@ proc rglob {dirlist globlist} {
     return $result
 }
 
-set VERILOG_FILES [rglob data/rtl/ *]
+set VERILOG_FILES [rglob $RTL_PATH *]
 
 set SYNTH_BLOCK 01-synthesize
 set INIT_BLOCK 02-init_design
-set COMPILE_BLOCK 03-compile
-set DPLAN_BLOCK 04-design_planning
-set PLACE_BLOCK 05-placement
-set CTS_BLOCK 06-cts
-set ROUTING_BLOCK 07-routing
-set SEXTRACT_BLOCK 08-signoff_extraction
-set SMFILL_BLOCK 09-signoff_metal_fill
-set SDRC_BLOCK 10-signoff_drc
-set SLVS_BLOCK 11-signoff_lvs
-set STREAMOUT_BLOCK 12-streamout
+set DPLAN_BLOCK 03-design_planning
+set PLACE_BLOCK 04-placement
+set CTS_BLOCK 05-cts
+set ROUTING_BLOCK 06-routing
+set SEXTRACT_BLOCK 07-signoff_extraction
+set SMFILL_BLOCK 08-signoff_metal_fill
+set SDRC_BLOCK 09-signoff_drc
+set SLVS_BLOCK 10-signoff_lvs
+set STREAMOUT_BLOCK 11-streamout
 
 if { ![file exists $OUTPUTS_DIR] } {
     file mkdir $OUTPUTS_DIR
@@ -142,7 +138,6 @@ set counter 1
 foreach block {
     SYNTH_BLOCK
     INIT_BLOCK
-    COMPILE_BLOCK
     DPLAN_BLOCK
     PLACE_BLOCK
     CTS_BLOCK
@@ -162,15 +157,14 @@ foreach block {
 
 proc set_genus_options {} {
     global \
+    PROCESS_NODE \
     RTL_PATH \
-    NETLIST_PATH \
     LEC_DIR
 
     set_db design_process_node $PROCESS_NODE
 
     set_db init_hdl_search_path {
         $RTL_PATH
-        $NETLIST_PATH
     }
 
     set_db syn_generic_effort medium
@@ -195,13 +189,13 @@ proc set_genus_options {} {
     set_db lp_insert_clock_gating false
 
     set_db auto_super_thread true
-    set_db / .max_cpus_per_server 8
 
     set_db hdl_error_on_latch false
 }
 
 proc set_innovus_options {} {
     global \
+    PROCESS_NODE \
     MIN_ROUTING_LAYER \
     MAX_ROUTING_LAYER
 

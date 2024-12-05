@@ -15,41 +15,63 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-XCELIUM_EXEC ?= xrun
+#XCELIUM_EXEC ?= xrun
 GENUS_EXEC ?= genus
 INNOVUS_EXEC ?= innovus
 
-TSMCHOME ?=
+OUTPUTS_DIR ?= outputs
+REPORTS_DIR ?= reports
+LOGS_DIR ?= logs
 
-TOP_MODULE = c0_soc
-OUTPUTS_DIR = outputs
-NETLIST_PATH = $(OUTPUTS_DIR)
-NETLIST = $(NETLIST_PATH)/$(TOP_MODULE)_netlist.sv
+script1  ?= scripts/01_synthesize.tcl
+script2  ?= scripts/02_init_design.tcl
+script3  ?= scripts/03_design_planning.tcl
+script4  ?= scripts/04_placement.tcl
+script5  ?= scripts/05_cts.tcl
+script6  ?= scripts/06_routing.tcl
+script7  ?= scripts/07_signoff_extraction.tcl
+script8  ?= scripts/08_signoff_metal_fill.tcl
+script9 ?= scripts/09_signoff_drc.tcl
+script10 ?= scripts/10_signoff_lvs.tcl
+script11 ?= scripts/11_streamout.tcl
 
-RTL_PATH = data/rtl
+$(LOGS_DIR):
+	mkdir -p $(LOGS_DIR)
 
-IO_VERILOG_MODEL =
-XRUN_PARAMS :=
-XRUN_PARAMS += -v $(IO_VERILOG_MODEL)
-XRUN_PARAMS += -timescale 1ns/1ps
-XRUN_PARAMS += +nowarnTRNNOP
+all: s1
 
-rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
-#rwildcard = $(foreach d,$(wildcard $1*),$(if $(wildcard $d),$(call rwildcard,$d/,$2),$(filter $(subst *,%,$2),$d)))
-VERILOG_FILES = $(call rwildcard,$(RTL_PATH),*)
+s1: $(LOGS_DIR)
+	$(GENUS_EXEC) -abort_on_error -batch -overwrite -files $(script1) | tee $(LOGS_DIR)/$(shell basename $(script1) .tcl | sed 's|^.*/||').log
 
-all: netlist
+s2:
+	$(INNOVUS_EXEC) -stylus -abort_on_error -batch -files $(script2) | tee $(LOGS_DIR)/$(shell basename $(script2) .tcl | sed 's|^.*/||').log
 
-netlist: $(NETLIST)
-	@$(XCELIUM_EXEC) \
-		-clean \
-		-elaborate $(NETLIST) $(XRUN_PARAMS) \
-		-incdir $(RTL_PATH) \
-		-top $(TOP_MODULE)
+s3:
+	$(INNOVUS_EXEC) -stylus -abort_on_error -batch -files $(script3) | tee $(LOGS_DIR)/$(shell basename $(script3) .tcl | sed 's|^.*/||').log
 
-$(NETLIST): $(VERILOG_FILES)
-	@mkdir -p $(dir $@)
-	cat $(VERILOG_FILES) > $@
+s4:
+	$(INNOVUS_EXEC) -stylus -abort_on_error -batch -files $(script4) | tee $(LOGS_DIR)/$(shell basename $(script4) .tcl | sed 's|^.*/||').log
+
+s5:
+	$(INNOVUS_EXEC) -stylus -abort_on_error -batch -files $(script5) | tee $(LOGS_DIR)/$(shell basename $(script5) .tcl | sed 's|^.*/||').log
+
+s6:
+	$(INNOVUS_EXEC) -stylus -abort_on_error -batch -files $(script6) | tee $(LOGS_DIR)/$(shell basename $(script6) .tcl | sed 's|^.*/||').log
+
+s7:
+	$(INNOVUS_EXEC) -stylus -abort_on_error -batch -files $(script7) | tee $(LOGS_DIR)/$(shell basename $(script7) .tcl | sed 's|^.*/||').log
+
+s8:
+	$(INNOVUS_EXEC) -stylus -abort_on_error -batch -files $(script8) | tee $(LOGS_DIR)/$(shell basename $(script8) .tcl | sed 's|^.*/||').log
+
+s9:
+	$(INNOVUS_EXEC) -stylus -abort_on_error -batch -files $(script9) | tee $(LOGS_DIR)/$(shell basename $(script9) .tcl | sed 's|^.*/||').log
+
+s10:
+	$(INNOVUS_EXEC) -stylus -abort_on_error -batch -files $(script10) | tee $(LOGS_DIR)/$(shell basename $(script10) .tcl | sed 's|^.*/||').log
+
+s11:
+	$(INNOVUS_EXEC) -stylus -abort_on_error -batch -files $(script11) | tee $(LOGS_DIR)/$(shell basename $(script11) .tcl | sed 's|^.*/||').log
 
 clean:
 	rm -rf xcelium.d \

@@ -1,3 +1,13 @@
+*.log
+*.logv
+*.cmd
+*.txt*
+*tmp*/
+*cache*/
+outputs/
+reports/
+logs/
+dlibs/
 /genus.cmd*
 /genus.log*
 *.swp
@@ -27,4 +37,7 @@ streamOut.map
 *_launch*
 *_client*
 .timing*
+xrun.log
+xrun.history
+xcelium.d
 

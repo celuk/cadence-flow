@@ -17,18 +17,20 @@
 
 source scripts/00_setup.tcl
 
+set CURRENT_STEP $SYNTH_BLOCK
+
 set_genus_options
 
-read_mmmc "constraints/mmmc.tcl"
+read_mmmc scripts/mmmc.tcl
 
 set_db init_power_nets  {VDD VDDPST}
 set_db init_ground_nets {VSS}
 
-read_physical -lefs { \
+read_physical -lefs " \
     $STD_LEF \
     $IO_LEF \
     $BONDPAD_LEF \
-}
+"
 
 #read_physical -oa_ref_libs " \
 #    $STDCELL_LIB_NAME \
@@ -44,20 +46,20 @@ read_physical -lefs { \
 #    $TSMCHOME_SEALRING_WLCSP_GDS
 #" -layer_map "$TSMCHOME_GDSOUT_MAP_FILE"
 
-read_hdl -sv $NETLIST
+read_hdl -sv $VERILOG_FILES
 
 elaborate $TOP_MODULE
 timestat ELABORATE
 
 init_design -top $TOP_MODULE
 
-syn_generic $DESIGN
+syn_generic $DESIGN_NAME
 timestat GENERIC
 
-syn_map $DESIGN
+syn_map $DESIGN_NAME
 timestat MAPPED
 
-syn_opt $DESIGN
+syn_opt $DESIGN_NAME
 timestat OPT
 
 redirect -file $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_timing_intent.rpt {check_timing_intent -verbose}
@@ -65,4 +67,6 @@ redirect -file $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_design.rpt {check_desi
 redirect -file $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_qor.rpt {report_qor $DESIGN_NAME}
 redirect -file $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_timing.rpt {report_timing}
 
-write_design -innovus -basename ${OUTPUTS_DIR}/$DESIGN_NAME
+write_design -innovus -basename ${DB_DIR}/$DESIGN_NAME
+
+write_db ${DB_DIR}/${CURRENT_STEP}.db
