@@ -51,3 +51,4 @@ data/tech/captable/*
 data/tech/LVS/*
 !data/tech/LVS/.gitkeep
 data/tech/qrcTechFile
+*.zip
