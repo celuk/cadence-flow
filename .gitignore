@@ -39,4 +39,15 @@ xcelium.d
 RPT*/
 *qrc.log* \
 open_block.tcl
+data/gds/
+data/lef/
+data/nldm/
+data/tech/*
+!data/tech/.gitkeep
+!data/tech/captable/
+data/tech/captable/*
+!data/tech/captable/.gitkeep
+!data/tech/LVS/
+data/tech/LVS/*
+!data/tech/LVS/.gitkeep
 data/tech/qrcTechFile

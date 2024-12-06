@@ -1,11 +1,19 @@
-#                          Technology and LEF layer map
-#
-# Technology and LEF layers are mapped automatically by encounter.
-# If a user needs customised mapping, specify a layermap file. Layermap file
-# is specified using command "setExtractRCMode -lefTechFileMap <layermapFile>".
-#
-
-# Mapping of layers are from <lefLayer> to <techLayer>
+# This file is part of https://github.com/celuk/cadence-flow
+# Copyright (C) 2024  Seyyid Hikmet Celik
+# 					  seyyid4091@gmail.com
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 extraction_setup \
         -technology_layer_map \
@@ -30,8 +38,3 @@ extraction_setup \
                 M9       metal9 \
                 RV        VIA9 \
                 AP       metal10 \
-
-
-# Lef file might contain multiple masterslice layers. Only one is printed in log file.
-# Encounter does not distinguish between masterslice layers in TQRC/IQRC extraction.
-
