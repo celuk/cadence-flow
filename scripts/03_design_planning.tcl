@@ -26,7 +26,7 @@ set_innovus_options
 
 read_io_file $IO_FILE
 
-create_floorplan -box_size {0 0 1000 1000 75 75 925 925 125 125 875 875}
+create_floorplan -box_size {0 0 1000 1000 75 75 925 925 130 130 870 870}
 
 legalize_floorplan -check_orient
 legalize_floorplan -check_site

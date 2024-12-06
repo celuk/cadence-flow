@@ -36,6 +36,8 @@ set_db add_tieoffs_cells $TIE_CELLS
 set_db add_tieoffs_max_fanout 1
 add_tieoffs
 
-source scripts/add_bond_pads.tcl
+#source scripts/add_bond_pads.tcl
+source scripts/createNplace_bondpads.tcl
+createNplace_bondpads -inline_pad_ref_name $BONDPAD_CELL
 
 write_db ${DB_DIR}/${CURRENT_STEP}.db
