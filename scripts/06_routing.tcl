@@ -56,7 +56,7 @@ set_db delaycal_enable_si true
 set_db opt_post_route_drv_recovery true
 set_db opt_effort high
 
-opt_design -post_route -setup -hold -report_prefix $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_opt_post_route_setup_hold -report_dir $REPORTS_DIR/${CURRENT_STEP}
-opt_design -post_route -drv -report_prefix $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_opt_post_route_drv -report_dir $REPORTS_DIR/${CURRENT_STEP}
+opt_design -post_route -setup -hold -report_prefix ${TOP_MODULE}_opt_post_route_setup_hold -report_dir $REPORTS_DIR/${CURRENT_STEP}
+opt_design -post_route -drv -report_prefix ${TOP_MODULE}_opt_post_route_drv -report_dir $REPORTS_DIR/${CURRENT_STEP}
 
 write_db ${DB_DIR}/${CURRENT_STEP}.db

@@ -140,6 +140,7 @@ clean:
 		*_client* \
 		.timing* \
 		RPT*/ \
+		*qrc.log* \
 		open_block.tcl
 
 show show_cli:

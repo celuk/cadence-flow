@@ -30,11 +30,16 @@ create_timing_condition -name WC_tc  -opcond WC_opcond  -library_sets "WC_stdcel
 create_timing_condition -name WCL_tc -opcond WCL_opcond -library_sets "WCL_stdcell_libs WCL_iocell_libs"
 create_timing_condition -name WCZ_tc -opcond WCZ_opcond -library_sets "WCZ_stdcell_libs WCZ_iocell_libs"
 
-create_rc_corner -name RC_corner_typical -qrc_tech $QRC_TECH_FILE
+create_rc_corner -name RC_corner_typical -cap_table $PARASITICS_NOM_CAPTABLE -qrc_tech $QRC_TECH_FILE
+create_rc_corner -name RC_corner_rcworst -cap_table $PARASITICS_MAX_CAPTABLE -qrc_tech $QRC_TECH_FILE
+create_rc_corner -name RC_corner_rcbest  -cap_table $PARASITICS_MIN_CAPTABLE -qrc_tech $QRC_TECH_FILE
+
+#create_rc_corner -name RC_corner_typical -qrc_tech $QRC_TECH_FILE
+#create_rc_corner -name RC_corner_rcworst -qrc_tech $QRC_TECH_FILE
+#create_rc_corner -name RC_corner_rcbest  -qrc_tech $QRC_TECH_FILE
+
 #create_rc_corner -name RCcorner_cworst  -qrc_tech $QRC_TECH_FILE
 #create_rc_corner -name RCcorner_cbest   -qrc_tech $QRC_TECH_FILE
-create_rc_corner -name RC_corner_rcworst -qrc_tech $QRC_TECH_FILE
-create_rc_corner -name RC_corner_rcbest  -qrc_tech $QRC_TECH_FILE
 
 create_delay_corner -name TC_dc  -timing_condition TC_tc  -rc_corner RC_corner_typical
 create_delay_corner -name BC_dc  -timing_condition BC_tc  -rc_corner RC_corner_rcbest

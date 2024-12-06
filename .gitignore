@@ -37,4 +37,5 @@ xrun.history
 xcelium.d
 .history
 RPT*/
+*qrc.log* \
 open_block.tcl

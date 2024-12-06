@@ -24,7 +24,7 @@ read_db ${DB_DIR}/${PREVIOUS_STEP}.db
 
 set_innovus_options
 
-time_design -pre_cts -report_prefix $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_pre_cts -report_dir $REPORTS_DIR/${CURRENT_STEP}
+time_design -pre_cts -report_prefix ${TOP_MODULE}_pre_cts -report_dir $REPORTS_DIR/${CURRENT_STEP}
 opt_design -pre_cts -setup -drv -report_prefix REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_pre_cts_opt -report_dir $REPORTS_DIR/${CURRENT_STEP}
 
 #set_db cts_inverter_cells [get_db [get_lib_cells -regexp $CTS_INV_CELL_REGEXP] .base_name]
@@ -37,15 +37,15 @@ set_db cts_target_max_transition_time 0.2
 
 clock_design
 
-redirect -file $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_clock_tree_summary.rpt {report_clock_trees -summary}
-redirect -file $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_clock_tree_structure.rpt {report_clock_tree_structure}
+redirect -file ${TOP_MODULE}_clock_tree_summary.rpt {report_clock_trees -summary}
+redirect -file ${TOP_MODULE}_clock_tree_structure.rpt {report_clock_tree_structure}
 
-opt_design -post_cts -report_prefix $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_post_cts_setup -report_dir $REPORTS_DIR/${CURRENT_STEP}
-opt_design -post_cts -hold -report_prefix $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_post_cts_hold -report_dir $REPORTS_DIR/${CURRENT_STEP}
-opt_design -post_cts -drv -report_prefix $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_post_cts_drv -report_dir $REPORTS_DIR/${CURRENT_STEP}
+opt_design -post_cts -report_prefix ${TOP_MODULE}_post_cts_setup -report_dir $REPORTS_DIR/${CURRENT_STEP}
+opt_design -post_cts -hold -report_prefix ${TOP_MODULE}_post_cts_hold -report_dir $REPORTS_DIR/${CURRENT_STEP}
+opt_design -post_cts -drv -report_prefix ${TOP_MODULE}_post_cts_drv -report_dir $REPORTS_DIR/${CURRENT_STEP}
 
-time_design -post_cts -report_prefix $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_time_post_cts_setup -report_dir $REPORTS_DIR/${CURRENT_STEP}
-time_design -post_cts -hold -report_prefix $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_time_post_cts_hold -report_dir $REPORTS_DIR/${CURRENT_STEP}
-time_design -post_cts -drv -report_prefix $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_time_post_cts_drv -report_dir $REPORTS_DIR/${CURRENT_STEP}
+time_design -post_cts -report_prefix ${TOP_MODULE}_time_post_cts_setup -report_dir $REPORTS_DIR/${CURRENT_STEP}
+time_design -post_cts -hold -report_prefix ${TOP_MODULE}_time_post_cts_hold -report_dir $REPORTS_DIR/${CURRENT_STEP}
+time_design -post_cts -drv -report_prefix ${TOP_MODULE}_time_post_cts_drv -report_dir $REPORTS_DIR/${CURRENT_STEP}
 
 write_db ${DB_DIR}/${CURRENT_STEP}.db

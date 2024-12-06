@@ -28,9 +28,9 @@ set_db timing_analysis_type ocv
 set_db timing_analysis_cppr both
 
 redirect -file $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_timing_check.rpt {check_timing -verbose}
-time_design -pre_place -report_prefix $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_pre_place -report_dir $REPORTS_DIR/${CURRENT_STEP}
+time_design -pre_place -report_prefix ${TOP_MODULE}_pre_place -report_dir $REPORTS_DIR/${CURRENT_STEP}
 
-place_opt_design -report_prefix $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_place_opt -report_dir $REPORTS_DIR/${CURRENT_STEP}
+place_opt_design -report_prefix ${TOP_MODULE}_place_opt -report_dir $REPORTS_DIR/${CURRENT_STEP}
 
 set_db add_tieoffs_cells $TIE_CELLS
 set_db add_tieoffs_max_fanout 1
