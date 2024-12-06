@@ -30,9 +30,10 @@ set_innovus_options
 
 redirect -file $REPORTS_DIR/${CURRENT_STEP}/${TOP_MODULE}_check_drc.rpt {check_drc}
 
-#run_pvs_drc_rules $topdrc -gds_file $resultDir/${DESIGN}.gds.gz
+#write_stream ${OUTPUTS_DIR}/${DESIGN_NAME}.gds -unit 1000 -merge $GDS_FILES_TO_MERGE -map_file $GDSOUT_MAP_FILE
+#run_pvs_drc_rules $DRC_DECK -gds_file ${OUTPUTS_DIR}/${DESIGN_NAME}.gds
 
-#read_markers c0_soc.ascii -rule_map_file $topdrc -type pvs
+#read_markers c0_soc.ascii -rule_map_file $DRC_DECK -type pvs
 #route_fix_signoff_drc
 
 write_db ${DB_DIR}/${CURRENT_STEP}.db

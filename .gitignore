@@ -39,3 +39,4 @@ xcelium.d
 RPT*/
 *qrc.log* \
 open_block.tcl
+data/tech/qrcTechFile

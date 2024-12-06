@@ -45,10 +45,11 @@ check_connectivity
 #delete_routes -regular_wire_with_drc
 route_eco -fix_drc
 
-#check_drc
-#check_connectivity
-#delete_routes -regular_wire_with_drc
-#route_eco -fix_drc
+delete_routes -regular_wire_with_drc
+route_eco -fix_drc
+
+check_drc
+check_connectivity
 
 set_db extract_rc_engine post_route
 set_db extract_rc_effort_level medium
